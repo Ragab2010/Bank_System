@@ -28,7 +28,6 @@ struct AccountDetails {
 //Singleton pattern 
 class Bank{
 public:
-// friend class SQLiteManager;
     static Bank& getInstance();
 
     int getDatabaseSize() const ;
@@ -59,6 +58,7 @@ private:
     std::shared_ptr<Account> findAccountByName(const Name_t& personName);
 
     std::shared_ptr<Account> findAccountById(AccountId_t accountId) ;
+    std::string trim(const std::string str);
     //constructor to make Back singleton
     Bank();
     /*this for store account and pointer to Person  by AccountId,

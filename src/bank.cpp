@@ -39,6 +39,7 @@ void Bank::updateUniqueAccountId() {
 }
 
 int Bank::createAccount( Name_t personName, std::string nationalIdCard, int balance ) {
+    personName = trim(personName);
     // Create account
     auto sharedPtrAccount = std::make_shared<Account>(++mUniqueAccountId, balance);
     if (!sharedPtrAccount) {
@@ -107,6 +108,7 @@ int Bank::balanceInquiryByAccountId(AccountId_t accountId) {
     return pairValueIter->second.second->getBalance();
 }
 std::vector<std::shared_ptr<Account>> Bank::showPersonAccounts( Name_t personName){
+    personName= trim(personName);
     auto personSharedPtr = findPersonByNameOrId(personName , "");
     if(personSharedPtr == nullptr){
         throw std::runtime_error("there is no Person found by this Name");
@@ -231,3 +233,17 @@ std::shared_ptr<Account> Bank::findAccountById(AccountId_t accountId) {
 }
 //constructor to make Back singleton
 Bank::Bank():mDatabase{} ,mPersonTable{} ,mNumberOfAcc{} , mUniqueAccountId{} , mUniquePersonId{}{}
+
+std::string Bank::trim(const std::string str) {
+    // Find the first non-whitespace character
+    size_t start = str.find_first_not_of(" \t\n\r\f\v");
+    if (start == std::string::npos) {
+        return ""; // If there's no non-whitespace character, return empty string
+    }
+
+    // Find the last non-whitespace character
+    size_t end = str.find_last_not_of(" \t\n\r\f\v");
+    
+    // Return the substring that represents the trimmed string
+    return std::move(str.substr(start, end - start + 1));
+}
