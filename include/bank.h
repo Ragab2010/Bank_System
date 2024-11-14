@@ -28,7 +28,7 @@ struct AccountDetails {
 //Singleton pattern 
 class Bank{
 public:
-friend class SQLiteManager;
+// friend class SQLiteManager;
     static Bank& getInstance();
 
     int getDatabaseSize() const ;
