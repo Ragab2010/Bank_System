@@ -10,6 +10,13 @@ A robust C++ banking system with dual persistence support (SQLite3 and JSON) fea
 
 The Universal Bank System is a command-line banking application that provides comprehensive account management capabilities. It features a flexible persistence layer that can store data either in SQLite3 database or JSON files, configurable through a simple configuration file.
 
+
+## 🎞️ GIF Demo
+- Demo for save data by using binary JSON file
+![jsonfile_for_saving_data.gif](gif/jsonfile_for_saving_data.gif)
+
+- Demo for save data by using SQLite3 database
+![sqlite_for_saving_data.gif](gif/sqlite_for_saving_data.gif)
 ### 🔑 Key Features
 
 - Account creation and management
@@ -174,6 +181,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🔍 Future Enhancements
 
+- [ ] Add Qt QML GUI Front-end
 - [ ] Multi-currency support
 - [ ] Interest calculation
 - [ ] Account types (Savings, Current)
