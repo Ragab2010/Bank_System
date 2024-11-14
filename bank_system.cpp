@@ -120,8 +120,10 @@ int main() {
                 if (depositData.has_value()) {
                     int accountId = depositData.value().accountId.value_or(-1);
                     int amount = depositData.value().amountOfMoney.value_or(0);
-                    if (universalBank.deposit(accountId, amount)) {
+                    int balance = universalBank.deposit(accountId, amount);
+                    if (balance) {
                         std::cout << "Deposited " << amount << " to Account ID " << accountId << ".\n";
+                        std::cout << "The balance of Account ID " << accountId << " is: " << balance << "\n";
                     } else {
                         std::cout << "Deposit failed. Account not found.\n";
                     }
@@ -133,8 +135,10 @@ int main() {
                 if (withdrawalData.has_value()) {
                     int accountId = withdrawalData.value().accountId.value_or(-1);
                     int amount = withdrawalData.value().amountOfMoney.value_or(0);
-                    if (universalBank.withdrawal(accountId, amount)) {
+                    int balance = universalBank.withdrawal(accountId, amount);
+                    if (balance) {
                         std::cout << "Withdrew " << amount << " from Account ID " << accountId << ".\n";
+                        std::cout << "The balance of Account ID " << accountId << " is: " << balance << "\n";
                     } else {
                         std::cout << "Withdrawal failed. Insufficient balance or account not found.\n";
                     }
