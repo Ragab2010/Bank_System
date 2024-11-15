@@ -1,11 +1,13 @@
 #include"person.h"
 
 Person::Person(int personId, std::string name, std::string nationalIdCard, AccountId_t accountId) 
-    : mPersonId{personId}, mName{std::move(name)}, mNationalIdCard{std::move(nationalIdCard)}, mNumOfAcc{0} {
+    : mPersonId{personId}, mName{std::move(name)}, mNationalIdCard{std::move(nationalIdCard)}, mNumOfAcc{0}  , sqliteFlage{}{
     mAccountIds.push_back(accountId);
     mNumOfAcc++;
 }
 
+    Person::Person(int personId, std::string name, std::string nationalIdCard)
+            : mPersonId{personId}, mName{std::move(name)}, mNationalIdCard{std::move(nationalIdCard)}, mNumOfAcc{},sqliteFlage{}{ }
 // Setters
 void Person::setPersonId(int personId) { mPersonId = personId; }
 void Person::setName(std::string name) { mName = std::move(name); }
@@ -32,4 +34,16 @@ void Person::decrementNumAcc(AccountId_t accountId) {
 // Accessor for account IDs
 const std::vector<AccountId_t>& Person::getAccountIdVector() const {
     return mAccountIds;
+}
+
+// set account IDs into AccountIdVector
+void Person::addAccountIdVector(AccountId_t accountId)  {
+    mAccountIds.push_back(accountId);
+}
+
+bool Person::getSqliteFlage()const{
+    return sqliteFlage;
+}
+void Person::setSqliteFlage(bool flage){
+    sqliteFlage=flage;
 }

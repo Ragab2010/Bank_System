@@ -8,6 +8,8 @@ using AccountId_t = int;
 class Person {
 public:
     Person(int personId, std::string name, std::string nationalIdCard, AccountId_t accountId);
+    //this constructor to create instance from sqlite database
+    Person(int personId, std::string name, std::string nationalIdCard);
 
     // Setters
     void setPersonId(int personId);
@@ -28,10 +30,18 @@ public:
 
     // Accessor for account IDs
     const std::vector<AccountId_t>& getAccountIdVector()const;
+    // add account IDs into AccountIdVector
+    void addAccountIdVector(AccountId_t accountId );
+
+    bool getSqliteFlage()const;
+    void setSqliteFlage(bool flage);
+
 private:
     int mPersonId;
     std::string mName;
     std::string mNationalIdCard;
     int mNumOfAcc;
+    bool sqliteFlage;
     std::vector<AccountId_t> mAccountIds;  // Store account IDs
+
 };
