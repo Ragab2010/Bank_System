@@ -1,4 +1,4 @@
-# 🏦 Universal Bank System
+# 🏦 Bank System
 
 A robust C++ banking system with dual persistence support (SQLite3 and JSON) featuring account management and transaction operations.
 
