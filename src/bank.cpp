@@ -36,12 +36,16 @@ void Bank::updateUniqueAccountId() {
     // Increment IDs so the next one to be assigned is unique
     // ++mUniqueAccountId;
     // ++mUniquePersonId;
+    // std::cout<<"updated mUniqueAccountId:"<<mUniqueAccountId<<std::endl;
+    // std::cout<<"updated mUniquePersonId:"<<mUniquePersonId<<std::endl;
+
 }
 
 int Bank::createAccount( Name_t personName, std::string nationalIdCard, int balance ) {
     personName = trim(personName);
     // Create account
     auto sharedPtrAccount = std::make_shared<Account>(++mUniqueAccountId, balance);
+    // std::cout<<"mUniqueAccountId:"<<mUniqueAccountId<<std::endl;
     if (!sharedPtrAccount) {
         --mUniqueAccountId;
         throw std::runtime_error("Cannot create account");
@@ -56,10 +60,11 @@ int Bank::createAccount( Name_t personName, std::string nationalIdCard, int bala
         // Increment the number of accounts for the found person
         PersonIter->incrementNumAcc(mUniqueAccountId);  // Dereference the shared_ptr to access the Person object
         mDatabase[mUniqueAccountId] = {PersonIter, sharedPtrAccount};
+        // std::cout<<"found mUniquePersonId:"<<PersonIter->getPersonId()<<std::endl;
     } else {
         // Create a new person and associate with the account
-        auto sharedPtrPerson = std::make_shared<Person>(mUniquePersonId, std::move(personName), std::move(nationalIdCard) , mUniqueAccountId);
-        ++mUniquePersonId;
+        auto sharedPtrPerson = std::make_shared<Person>(++mUniquePersonId, std::move(personName), std::move(nationalIdCard) , mUniqueAccountId);
+        // std::cout<<"new mUniquePersonId:"<<mUniquePersonId<<std::endl;
         if (sharedPtrPerson == nullptr) {
             --mUniquePersonId;
             throw std::runtime_error("Cannot create person");
