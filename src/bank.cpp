@@ -44,7 +44,8 @@ void Bank::updateUniqueAccountId() {
 int Bank::createAccount( Name_t personName, std::string nationalIdCard, int balance ) {
     personName = trim(personName);
     // Create account
-    auto sharedPtrAccount = std::make_shared<Account>(++mUniqueAccountId, balance);
+    // auto sharedPtrAccount = std::make_shared<Account>(++mUniqueAccountId, balance);
+    auto sharedPtrAccount = ObjectFactory::createAccount(++mUniqueAccountId, balance);
     // std::cout<<"mUniqueAccountId:"<<mUniqueAccountId<<std::endl;
     if (!sharedPtrAccount) {
         --mUniqueAccountId;
@@ -63,7 +64,8 @@ int Bank::createAccount( Name_t personName, std::string nationalIdCard, int bala
         // std::cout<<"found mUniquePersonId:"<<PersonIter->getPersonId()<<std::endl;
     } else {
         // Create a new person and associate with the account
-        auto sharedPtrPerson = std::make_shared<Person>(++mUniquePersonId, std::move(personName), std::move(nationalIdCard) , mUniqueAccountId);
+        // auto sharedPtrPerson = std::make_shared<Person>(++mUniquePersonId, std::move(personName), std::move(nationalIdCard) , mUniqueAccountId);
+        auto sharedPtrPerson = ObjectFactory::createPerson(++mUniquePersonId, std::move(personName), std::move(nationalIdCard) , mUniqueAccountId);
         // std::cout<<"new mUniquePersonId:"<<mUniquePersonId<<std::endl;
         if (sharedPtrPerson == nullptr) {
             --mUniquePersonId;
@@ -103,6 +105,7 @@ bool Bank::deleteAccount(AccountId_t accountId) {
     mDatabase.erase(pairValueIter);
     return true;
 }
+
 int Bank::balanceInquiryByAccountId(AccountId_t accountId) {
         // Find account by account ID
     auto pairValueIter = mDatabase.find(accountId);
@@ -112,6 +115,7 @@ int Bank::balanceInquiryByAccountId(AccountId_t accountId) {
     pairValueIter->second.second->setLastOperationDetails( std::chrono::system_clock::now() ,TypeOfOperation::CREATION );
     return pairValueIter->second.second->getBalance();
 }
+
 std::vector<std::shared_ptr<Account>> Bank::showPersonAccounts( Name_t personName){
     personName= trim(personName);
     auto personSharedPtr = findPersonByNameOrId(personName , "");
