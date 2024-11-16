@@ -40,7 +40,7 @@ public:
     int createAccount( Name_t personName, std::string nationalIdCard, int balance = 0);
     bool deleteAccount(AccountId_t accountId) ;
     int balanceInquiryByAccountId(AccountId_t accountId);
-    std::tuple<AccountId_t ,Name_t , std::pair< time_t ,std::string> , time_t > 
+    std::tuple<AccountId_t ,Name_t ,int , std::pair< time_t ,std::string> , time_t > 
     showAccountDetails(AccountId_t accountId);
     int withdrawal(AccountId_t accountId , int withdrawalMoney);
     int deposit(AccountId_t accountId , int depositMoney);

@@ -133,16 +133,17 @@ std::vector<std::shared_ptr<Account>> Bank::showPersonAccounts( Name_t personNam
 }
 
 
-std::tuple<AccountId_t ,Name_t , std::pair< time_t ,std::string> , time_t > 
+std::tuple<AccountId_t ,Name_t ,int  std::pair< time_t ,std::string> , time_t > 
 Bank::showAccountDetails(AccountId_t accountId){
     auto accountIdIter = mDatabase.find(accountId);
     if(accountIdIter == mDatabase.end()){
         throw std::runtime_error("there is no Account by this Id_number");
     }
     std::string personName    = accountIdIter->second.first->getName();
+    auto balance= accountIdIter->second.second->getBalance();
     auto lastOperationDetails =  convertLastOperationToTimeAndString(accountIdIter->second.second->getLastOperationDetails());
     auto timeOfAccountCreation= accountIdIter->second.second->getTimeOfAccCreation();
-    return {accountId ,personName , lastOperationDetails  , timeOfAccountCreation};
+    return {accountId ,personName ,balance ,  lastOperationDetails  , timeOfAccountCreation};
 }
 
 int Bank::deposit(AccountId_t accountId , int depositMoney){
