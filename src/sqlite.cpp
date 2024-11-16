@@ -87,10 +87,14 @@ void SQLiteManager::loadFromDatabase(Bank& bank) {
             std::string nationalIdCard = reinterpret_cast<const char*>(sqlite3_column_text(stmt_persons, 2));
             int numOfAccounts = sqlite3_column_int(stmt_persons, 3);
 
-            auto person = std::make_shared<Person>(personId, name, nationalIdCard, numOfAccounts);
+            auto person = std::make_shared<Person>(personId, name, nationalIdCard);
+            person->setNumOfAcc(numOfAccounts);
             personMap[personId] = person;
         }
-
+        // for(auto [personId , sharedPersonPtr] :personMap){
+        //     std::cout<<"personId:"<<personId<<"  :name:"<<sharedPersonPtr->getName()<<std::endl;
+        // }
+        // std::cout<<"account------------------------------------------"<<std::endl;
         // Load all Accounts and reconstruct mDatabase
         while (sqlite3_step(stmt_accounts) == SQLITE_ROW) {
             int accountId = sqlite3_column_int(stmt_accounts, 0);
@@ -113,11 +117,19 @@ void SQLiteManager::loadFromDatabase(Bank& bank) {
             if (personIt == personMap.end()) {
                 throw std::runtime_error("Person ID not found in personMap.");
             }
+            
             auto person = personIt->second;
-
+            // std::cout<<"find name:"<<person->getName()<<std::endl;
+            person->addAccountIdVector(accountId);
             // Update the Bank's database
             //bank.getDatabase()[accountId] = {person, account};
             bank.addToDatabase(accountId, person, account);
+            // std::cout<<"accountId:"<<accountId<<std::endl;
+            // std::cout<<"account ID:"<<account->getAccountId()<<std::endl;
+            // std::cout<<"person name:"<<person->getName()<<std::endl;
+            // std::cout<<"------------------------------------------"<<std::endl;
+
+
         }
 
         // Finalize prepared statements
@@ -185,10 +197,13 @@ void SQLiteManager::saveToDatabase(Bank& bank) {
             sqlite3_bind_text(stmt_person, 2, person->getName().c_str(), -1, SQLITE_TRANSIENT);
             sqlite3_bind_text(stmt_person, 3, person->getNationalIdCard().c_str(), -1, SQLITE_TRANSIENT);
             sqlite3_bind_int(stmt_person, 4, person->getNumberOfAccounts());
-
-            if (sqlite3_step(stmt_person) != SQLITE_DONE) {
-                throw std::runtime_error("Failed to execute INSERT statement for Persons: " + std::string(sqlite3_errmsg(db)));
+            if(person->getSqliteFlage()==false){
+                if (sqlite3_step(stmt_person) != SQLITE_DONE) {
+                    throw std::runtime_error("Failed to execute INSERT statement for Persons: " + std::string(sqlite3_errmsg(db)));
+                }
+                person->setSqliteFlage(true);
             }
+
             sqlite3_reset(stmt_person); // Reset the statement for the next binding
 
             // Insert Account
@@ -207,6 +222,9 @@ void SQLiteManager::saveToDatabase(Bank& bank) {
             if (sqlite3_step(stmt_account) != SQLITE_DONE) {
                 throw std::runtime_error("Failed to execute INSERT statement for Accounts: " + std::string(sqlite3_errmsg(db)));
             }
+            //to make only one person if there is a lot of account relate to one person 
+            person->decrementNumAcc(account->getAccountId());
+
             sqlite3_reset(stmt_account); // Reset the statement for the next binding
         }
 
