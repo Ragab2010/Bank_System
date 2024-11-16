@@ -2,6 +2,7 @@
 
 #include "person.h"
 #include "account.h"
+#include "factory.h"
 #include <string>
 #include <unordered_map>
 #include <vector>
