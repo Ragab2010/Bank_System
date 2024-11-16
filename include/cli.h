@@ -12,6 +12,7 @@ enum MenuOption {
     BALANCEINQUIRY,
     SHOWPERSONACCOUNTS,
     SHOWACCOUNTDETAILS,
+    SHOWAllACCOUNTDETAILS,
     DEPOSIT,
     WITHDRAWAL,
     EXIT
@@ -42,6 +43,8 @@ public:
     std::optional<MenuReturn> Menu_showPersonAccounts();
     // Handle SHOWACCOUNTDETAILS 
     std::optional<MenuReturn> Menu_showAccountDetails();
+    // Handle SHOWAllACCOUNTDETAILS 
+    std::optional<MenuReturn> Menu_showAllAccountDetails();
     // Delete Account
     std::optional<MenuReturn> Menu_deleteAccount();
 private:

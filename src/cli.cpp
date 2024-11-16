@@ -11,9 +11,10 @@ Menu_t cli::showMenu() {
                 << "3: Balance Inquiry\n"
                 << "4: Show Person Accounts\n"
                 << "5: Show Account Details\n"
-                << "6: Deposit\n"
-                << "7: Withdrawal\n"
-                << "8: Exit\n"; 
+                << "6: Show All Account Details\n"
+                << "7: Deposit\n"
+                << "8: Withdrawal\n"
+                << "9: Exit\n"; 
     return readMenuNumberFromInput();
 }
 
@@ -128,6 +129,10 @@ std::optional<MenuReturn> cli::Menu_showAccountDetails() {
     if (accountId > 0){
         return MenuReturn{"" , "", accountId , std::nullopt};;
     }
+    return std::nullopt; 
+}
+// Handle SHOWALLACCOUNTDETAILS 
+std::optional<MenuReturn> cli::Menu_showAllAccountDetails() {
     return std::nullopt; 
 }
 
