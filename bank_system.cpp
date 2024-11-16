@@ -116,6 +116,27 @@ int main() {
                 }
                 break;
             }
+            case MenuOption::SHOWAllACCOUNTDETAILS: {
+                auto showAccountDetailsData = menu.Menu_showAllAccountDetails();
+                if (showAccountDetailsData.has_value()) {
+                
+                }else{
+                    auto database=universalBank.getDatabase();
+                    for(const auto & [accountId , account_person] :database ){
+                        auto [id, owner,balance,  lastOperationDetails ,timeOfAccountCreation] = universalBank.showAccountDetails(accountId);
+                        auto [lastOperationTime, operationType] = lastOperationDetails;
+                        std::cout << "----------------------------------------------------------------\n";
+                        std::cout << "Account ID: " << id << "\n";
+                        std::cout << "Owner: " << owner << "\n";
+                        std::cout << "Balance: " << balance << "\n";
+                        std::cout << "Last Operation Time: " << std::ctime(&lastOperationTime);
+                        std::cout << "Last Operation Type: " <<operationType << "\n";
+                        std::cout << "Account Creation Time: " <<std::ctime(&timeOfAccountCreation) << "\n";
+                        std::cout << "----------------------------------------------------------------\n";
+                    }
+                }
+                break;
+            }
             case MenuOption::DEPOSIT: {
                 auto depositData = menu.Menu_deposit();
                 if (depositData.has_value()) {
