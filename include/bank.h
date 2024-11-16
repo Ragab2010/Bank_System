@@ -51,10 +51,10 @@ public:
                             const std::chrono::system_clock::time_point& creationTime,
                             const std::pair<std::chrono::system_clock::time_point, TypeOfOperation>& lastOperationDetails);
 
-std::vector<std::shared_ptr<Account>> getAccounts() const;
+    std::vector<std::shared_ptr<Account>> getAccounts() const;
+    std::shared_ptr<Person> findPersonByNameOrId(const Name_t& personName, const std::string& nationalIdCard);
 private:
 
-    std::shared_ptr<Person> findPersonByNameOrId(const Name_t& personName, const std::string& nationalIdCard);
     std::shared_ptr<Account> findAccountByName(const Name_t& personName);
 
     std::shared_ptr<Account> findAccountById(AccountId_t accountId) ;
