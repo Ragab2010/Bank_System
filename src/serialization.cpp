@@ -91,7 +91,8 @@ void Serialization::loadFromFile(const std::string& filename, Bank& bank) {
             person =PersonIter;
         } else {
         // Create a new person and associate with the account
-        person = std::make_shared<Person>(personId, std::move(name), std::move(nationalIdCard) , accountId);
+        // person = std::make_shared<Person>(personId, std::move(name), std::move(nationalIdCard) , accountId);
+        person = ObjectFactory::createPerson(personId, std::move(name), std::move(nationalIdCard) , accountId);
         // std::cout<<"new mUniquePersonId:"<<mUniquePersonId<<std::endl;
         }
 
@@ -102,7 +103,8 @@ void Serialization::loadFromFile(const std::string& filename, Bank& bank) {
         time_t creationTime;
         inFile.read(reinterpret_cast<char*>(&creationTime), sizeof(creationTime));
 
-        auto account = std::make_shared<Account>(accountId, accountBalance);
+        // auto account = std::make_shared<Account>(accountId, accountBalance);
+        auto account = ObjectFactory::createAccount(accountId, accountBalance);
         account->setLastOperationDetails(std::chrono::system_clock::from_time_t(creationTime), TypeOfOperation::CREATION);
 
         // Add to Bank's database
