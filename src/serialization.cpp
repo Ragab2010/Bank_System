@@ -34,8 +34,8 @@ void Serialization::saveToFile(const std::string& filename, const Bank& bank) {
         outFile.write(reinterpret_cast<const char*>(&idCardSize), sizeof(idCardSize));
         outFile.write(nationalIdCard.data(), idCardSize);
 
-        int numOfAcc = person->getNumberOfAccounts();
-        outFile.write(reinterpret_cast<const char*>(&numOfAcc), sizeof(numOfAcc));
+        // int numOfAcc = person->getNumberOfAccounts();
+        // outFile.write(reinterpret_cast<const char*>(&numOfAcc), sizeof(numOfAcc));
 
         // Write Account data
         int accountBalance = account->getBalance();
@@ -74,11 +74,26 @@ void Serialization::loadFromFile(const std::string& filename, Bank& bank) {
         std::string nationalIdCard(idCardSize, ' ');
         inFile.read(&nationalIdCard[0], idCardSize);
 
-        int numOfAcc;
-        inFile.read(reinterpret_cast<char*>(&numOfAcc), sizeof(numOfAcc));
+        // int numOfAcc;
+        // inFile.read(reinterpret_cast<char*>(&numOfAcc), sizeof(numOfAcc));
+        //person->setNumOfAcc(numOfAcc);
 
-        auto person = std::make_shared<Person>(personId, name, nationalIdCard, accountId);
-        person->setNumOfAcc(numOfAcc);
+        // Check if there is a person with the same name or national ID
+        auto PersonIter = bank.findPersonByNameOrId(name, nationalIdCard);
+
+        // auto person= std::make_shared<Person>(personId, name, nationalIdCard, accountId);
+        std::shared_ptr<Person> person;
+
+        // If a person with the same name or national ID exists
+        if (PersonIter !=nullptr) {
+            // Increment the number of accounts for the found person
+            PersonIter->incrementNumAcc(accountId); 
+            person =PersonIter;
+        } else {
+        // Create a new person and associate with the account
+        person = std::make_shared<Person>(personId, std::move(name), std::move(nationalIdCard) , accountId);
+        // std::cout<<"new mUniquePersonId:"<<mUniquePersonId<<std::endl;
+        }
 
         // Read Account data
         int accountBalance;
@@ -94,3 +109,4 @@ void Serialization::loadFromFile(const std::string& filename, Bank& bank) {
         bank.addToDatabase(accountId, person, account);
     }
 }
+ 
