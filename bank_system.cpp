@@ -105,10 +105,11 @@ int main() {
                 auto showAccountDetailsData = menu.Menu_showAccountDetails();
                 if (showAccountDetailsData.has_value()) {
                     int accountId = showAccountDetailsData.value().accountId.value_or(-1);
-                    auto [id, owner, lastOperationDetails ,timeOfAccountCreation] = universalBank.showAccountDetails(accountId);
+                    auto [id, owner,balance,  lastOperationDetails ,timeOfAccountCreation] = universalBank.showAccountDetails(accountId);
                     auto [lastOperationTime, operationType] = lastOperationDetails;
                     std::cout << "Account ID: " << id << "\n";
                     std::cout << "Owner: " << owner << "\n";
+                    std::cout << "Balance: " << balance << "\n";
                     std::cout << "Last Operation Time: " << std::ctime(&lastOperationTime);
                     std::cout << "Last Operation Type: " <<operationType << "\n";
                     std::cout << "Account Creation Time: " <<std::ctime(&timeOfAccountCreation) << "\n";
