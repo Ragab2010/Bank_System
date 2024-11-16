@@ -87,7 +87,8 @@ void SQLiteManager::loadFromDatabase(Bank& bank) {
             std::string nationalIdCard = reinterpret_cast<const char*>(sqlite3_column_text(stmt_persons, 2));
             int numOfAccounts = sqlite3_column_int(stmt_persons, 3);
 
-            auto person = std::make_shared<Person>(personId, name, nationalIdCard);
+            // auto person = std::make_shared<Person>(personId, name, nationalIdCard);
+            auto person = ObjectFactory::createPerson(personId, name, nationalIdCard , std::nullopt);
             person->setNumOfAcc(numOfAccounts);
             personMap[personId] = person;
         }
@@ -120,6 +121,7 @@ void SQLiteManager::loadFromDatabase(Bank& bank) {
             
             auto person = personIt->second;
             // std::cout<<"find name:"<<person->getName()<<std::endl;
+            //add accountId to the AccountIdVector , this means that this account relate for this person
             person->addAccountIdVector(accountId);
             // Update the Bank's database
             //bank.getDatabase()[accountId] = {person, account};
