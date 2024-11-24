@@ -4,10 +4,19 @@
 #include "serialization.h" 
 #include "config_manager.h" 
 #include "sqlite.h"
+#include "lock.h"
 
 
 
 int main() {
+    ProcessLock lock("mydatabase");
+    
+    // Lock will be automatically released when the ProcessLock object is destroyed
+    if (!lock.acquire()) {
+        std::cerr << "Cannot start application - another instance is running" << std::endl;
+        return 1;
+    }
+
     cli menu;
     Bank& universalBank = Bank::getInstance();
     Menu_t SelNumber = 0;
